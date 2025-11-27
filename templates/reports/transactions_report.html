@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+  <title>Transactions Report</title>
+  <style>
+    @media print { .no-print { display: none; } }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid #ddd; padding: 6px; }
+  </style>
+</head>
+<body>
+  <h1>Transactions Report</h1>
+  <button class="no-print" onclick="window.print()">Print</button>
+
+  <h2>Loans</h2>
+  <table>
+    <thead><tr><th>ID</th><th>User</th><th>Amount</th><th>Status</th></tr></thead>
+    <tbody>
+      {% for l in loans %}
+      <tr><td>{{ l.id }}</td><td>{{ l.user.username }}</td><td>{{ l.amount }}</td><td>{{ l.status }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h2>Repayments</h2>
+  <table>
+    <thead><tr><th>ID</th><th>User</th><th>Loan</th><th>Amount</th><th>Date</th></tr></thead>
+    <tbody>
+      {% for r in repayments %}
+      <tr><td>{{ r.id }}</td><td>{{ r.user.username }}</td><td>{{ r.loan.id }}</td><td>{{ r.amount }}</td><td>{{ r.date }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>

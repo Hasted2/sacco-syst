@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+<head>
+  <title>Repayments by User</title>
+  <style>@media print { .no-print { display: none; } } table { width:100%; border-collapse:collapse } th,td{border:1px solid #ddd; padding:6px}</style>
+</head>
+<body>
+  <h1>Repayments by User</h1>
+  <button class="no-print" onclick="window.print()">Print</button>
+  <table>
+    <thead><tr><th>User</th><th>Total Repaid</th></tr></thead>
+    <tbody>
+      {% for u in users %}
+      <tr><td>{{ u.username }}</td><td>{{ u.total_repaid|default:"0.00" }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>
