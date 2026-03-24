@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import api from "../api/axios";
 
 const PasswordReset = () => {
@@ -19,71 +19,51 @@ const PasswordReset = () => {
     }
   };
 
-  const inputStyle = {
-    width: "100%",
-    padding: "0.7rem",
-    marginBottom: "1rem",
-    borderRadius: "6px",
-    border: "1px solid #333",
-    backgroundColor: "#1b263b",
-    color: "#f5f5f5",
-  };
-
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        backdropFilter: "blur(8px)",
-        backgroundColor: "rgba(0,0,0,0.5)",
-      }}
-    >
+    <div className="min-h-screen flex flex-col justify-center items-center bg-slate-900/80 backdrop-blur-sm px-4 font-sans text-slate-100">
+      
+      <div className="w-full max-w-sm mb-6 flex justify-between items-center z-10">
+        <Link to="/login" className="text-slate-400 hover:text-white transition-colors text-sm flex items-center">
+          &larr; Back to Login
+        </Link>
+      </div>
+
       <form
         onSubmit={handleReset}
-        style={{
-          backgroundColor: "rgba(20, 20, 30, 0.9)",
-          color: "#f5f5f5",
-          padding: "2rem",
-          borderRadius: "12px",
-          boxShadow: "0 6px 18px rgba(0,0,0,0.8)",
-          width: "320px",
-        }}
+        className="glass-panel w-full max-w-sm p-8 rounded-2xl z-10"
       >
-        <h2 style={{ textAlign: "center", marginBottom: "1rem", color: "#00aaff" }}>
-          Reset Password
-        </h2>
+        <div className="text-center mb-8">
+          <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-400">
+            Reset Password
+          </h2>
+          <p className="text-slate-400 text-sm mt-2">Enter your email to receive a reset link</p>
+        </div>
 
-        <input
-          type="email"
-          placeholder="Enter your email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          style={inputStyle}
-        />
+        <div className="mb-8">
+          <label className="block text-slate-300 text-sm font-semibold mb-2">Email Address</label>
+          <input
+            type="email"
+            placeholder="you@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-100 placeholder-slate-500 transition-all"
+          />
+        </div>
 
         <button
           type="submit"
-          style={{
-            width: "100%",
-            padding: "0.7rem",
-            backgroundColor: "#00aaff",
-            color: "#fff",
-            border: "none",
-            borderRadius: "6px",
-            cursor: "pointer",
-            fontWeight: "bold",
-          }}
+          className="w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500 text-white font-bold rounded-lg shadow-lg shadow-blue-500/30 transition-all transform hover:-translate-y-0.5"
         >
           Send Reset Link
         </button>
 
         {message && (
-          <p style={{ marginTop: "1rem", textAlign: "center", fontWeight: "bold", color: message.includes("✅") ? "lime" : "red" }}>
-            {message}
-          </p>
+          <div className="mt-6 text-center text-sm font-medium">
+            <span className={message.includes("✅") ? "text-emerald-400" : "text-rose-400"}>
+              {message}
+            </span>
+          </div>
         )}
       </form>
     </div>
