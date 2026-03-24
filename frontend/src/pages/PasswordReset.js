@@ -15,7 +15,11 @@ const PasswordReset = () => {
       setTimeout(() => navigate("/login"), 4000); // ✅ auto redirect after 4s
     } catch (err) {
       console.error(err);
-      setMessage("❌ Failed to send reset link. Try again.");
+      if (err.response && err.response.data && err.response.data.detail) {
+        setMessage(`❌ ${err.response.data.detail}`);
+      } else {
+        setMessage("❌ Failed to send reset link. Try again.");
+      }
     }
   };
 

@@ -114,15 +114,18 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Email settings
-
+# Using console backend to bypass real SMTP requirements.
+# Emails (and reset links) will simply be printed to the Django terminal!
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-#EMAIL_HOST = 'smtp.gmail.com'
-#EMAIL_PORT = 587
-#EMAIL_USE_TLS = True
-#EMAIL_HOST_USER = 'your_email@gmail.com'
-#EMAIL_HOST_PASSWORD = 'your_app_password'  # use app password, not your Gmail password
-#DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# Uncomment below for production/real email later:
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'tedzayn@gmail.com'
+# EMAIL_HOST_PASSWORD = 'Skozan27.'
+DEFAULT_FROM_EMAIL = 'noreply@jamiisacco.com'
 
 # CORS settings
 CORS_ALLOWED_ORIGINS = [

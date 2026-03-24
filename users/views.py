@@ -125,19 +125,29 @@ def password_reset_request(request):
     PasswordResetToken.objects.create(
         user=user,
         token=token,
-        expires_at=timezone.now() + timedelta(hours=1),
-        is_used=False
+        expires_at=timezone.now() + timedelta(hours=1)
     )
 
     # Build reset link (frontend route)
     reset_link = f"http://localhost:3000/password-reset-confirm/{token}"
 
-    # TODO: send reset_link via email (currently just returned in response)
+    # Send email
+    from django.core.mail import send_mail
+    from django.conf import settings
+    try:
+        send_mail(
+            subject="Jamii Sacco Password Reset",
+            message=f"Hello {user.username},\n\nPlease click the link below to reset your password:\n{reset_link}\n\nIf you did not request this, please ignore this email.",
+            from_email=settings.DEFAULT_FROM_EMAIL if hasattr(settings, 'DEFAULT_FROM_EMAIL') else 'noreply@jamiisacco.com',
+            recipient_list=[user.email],
+            fail_silently=False,
+        )
+    except Exception as e:
+        logger.error(f"Failed to send email: {e}")
+        return Response({"detail": "Failed to send email. Please configure SMTP in settings.py."}, status=500)
+
     return Response({
-        "detail": "Reset link sent.",
-        "reset_link": reset_link,
-        "username": user.username,
-        "email": user.email,
+        "detail": "Reset link sent to your email.",
     }, status=200)
 
 
@@ -149,7 +159,7 @@ def password_reset_request(request):
 def password_reset_confirm(request, token):
     new_password = request.data.get("password")
     try:
-        reset_token = PasswordResetToken.objects.get(token=token, is_used=False)
+        reset_token = PasswordResetToken.objects.get(token=token)
     except PasswordResetToken.DoesNotExist:
         return Response({"detail": "Invalid or expired token."}, status=400)
 
@@ -160,8 +170,7 @@ def password_reset_confirm(request, token):
     user.password = make_password(new_password)
     user.save()
 
-    reset_token.is_used = True
-    reset_token.save()
+    reset_token.delete()
 
     return Response({"detail": "Password reset successful."})
 
